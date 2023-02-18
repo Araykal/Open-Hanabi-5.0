@@ -1,0 +1,47 @@
+{
+
+
+    "configurations": [
+        {
+            "name": "Hanabi",
+            "mainClass": "Start",
+            "type": "jps-run",
+            "module": "Hanabi-5.0",
+            "workingDir": "D:/Minecraft/.minecraft",
+            "dependsOn": ["build"],
+            "options": [
+                "-Djava.library.path=D:/Minecraft/.minecraft/versions/1.8.9/1.8.9-natives",
+                "-Dfile.encoding=UTF-8",
+            ],
+        },
+
+        {
+            "name": "Hanabi 5.0 [:Start.main()]",
+            "type": "gradle",
+            "environment": {
+                "org.gradle.jvmargs": "-Djava.library.path=D:/Minecraft/.minecraft/versions/1.8.9/1.8.9-natives"
+            },
+            "tasks": [":Start.main()"],
+            "initScripts": {"flmapper":"ext.mapPath = { path -> null }","Start.main()":"\n    def gradlePath = ':'\n    def runAppTaskName = 'Start.main()'\n    def mainClass = 'Start'\n    def javaExePath = mapPath('C:/Program Files/Java/jdk1.8.0_202/bin/java.exe')\n    def _workingDir = mapPath('D:/Code/projects/Java/Minecraft/Hanabi/Hanabi 5.0')\n\n    def sourceSetName = 'main'\n    def javaModuleName = null\n\n    \n    \n    \n\n    import org.gradle.util.GradleVersion\n\n    allprojects {\n      afterEvaluate { project ->\n        if(project.path == gradlePath && project?.convention?.findPlugin(JavaPluginConvention)) {\n          def overwrite = project.tasks.findByName(runAppTaskName) != null\n          project.tasks.create(name: runAppTaskName, overwrite: overwrite, type: JavaExec) {\n            if (javaExePath) executable = javaExePath\n            main = mainClass\n            \n            if (_workingDir) workingDir = _workingDir\n            standardInput = System.in\n            if (javaModuleName) {\n              classpath = tasks[sourceSets[sourceSetName].jarTaskName].outputs.files + project.sourceSets[sourceSetName].runtimeClasspath;\n              if (GradleVersion.current().baseVersion < GradleVersion.version(\"6.4\")) {\n                doFirst {\n                  jvmArgs += [\n                    '--module-path', classpath.asPath,\n                    '--module', javaModuleName + '/' + mainClass\n                  ]\n                  classpath = files()\n                }\n              } else {\n                mainModule = javaModuleName\n              }\n            } else {\n              classpath = project.sourceSets[sourceSetName].runtimeClasspath\n            }\n          }\n        }\n      }\n    }\n    "},
+        },
+
+
+
+        {
+        "name": "build",
+        "type": "gradle",
+        "tasks": ["build"],
+        "initScripts": {"flmapper":"ext.mapPath = { path -> null }",},
+        },
+
+//
+//        {
+//            "name": "build",
+//            "type": "jps-build",
+//            "module": "Hanabi-5.0",
+//            "workingDir": "D:/Minecraft/.minecraft",
+//        },
+
+
+    ]
+}
